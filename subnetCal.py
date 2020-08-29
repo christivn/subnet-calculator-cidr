@@ -6,15 +6,12 @@ def printCalculate(cidr):
     s_ip=ip.split(".")
     for i in range(4):
         int_ip=int(s_ip[i])
-        
         str_binary=str(decimalToBinary(int_ip))
         zeros=""
         for i in range(8-len(str_binary)):
             zeros+="0"
-        binary_ip+=zeros+str_binary
-
-        if(i<=3):
-            binary_ip+="."
+        binary_ip+=zeros+str_binary+"."
+    binary_ip=binary_ip[:-1]
 
     binary_mask=""
     binary_wildcard=""
@@ -77,7 +74,10 @@ def printCalculate(cidr):
         if(i<3):
             max_host+="."
 
-    total_host=pow(2,(int(s_cidr[1])-2))
+    zero_bits=0
+    for i in range(4):
+        zero_bits+=s_binary_mask[i].count("0")
+    total_host=pow(2,zero_bits)-2
 
     print("""\033[34m+--------------------------------------------------------+\033[0m
 \033[32m\033[01mNETWORK:\033[0m """+cidr+"""
@@ -112,10 +112,8 @@ def simpleCalculate(cidr):
         zeros=""
         for i in range(8-len(str_binary)):
             zeros+="0"
-        binary_ip+=zeros+str_binary
-
-        if(i<=3):
-            binary_ip+="."
+        binary_ip+=zeros+str_binary+"."
+    binary_ip=binary_ip[:-1]
 
     binary_mask=""
     binary_wildcard=""
@@ -178,7 +176,10 @@ def simpleCalculate(cidr):
         if(i<3):
             max_host+="."
 
-    total_host=pow(2,(int(s_cidr[1])-2))
+    zero_bits=0
+    for i in range(4):
+        zero_bits+=s_binary_mask[i].count("0")
+    total_host=pow(2,zero_bits)-2
 
     return [cidr,ip,mask,min_host,max_host,total_host]
 
